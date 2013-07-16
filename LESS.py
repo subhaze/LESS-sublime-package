@@ -39,12 +39,12 @@ def parse_view(file_name, view):
 		('var', 'variable.declaration.less'),
 		# ('id', 'entity.other.attribute-name.id'),
 		# ('class', 'entity.other.attribute-name.class.css'),
-		('mixin', 'entity.other.less.mixin')
+		('mixin', 'support.function.css.less')
 	]
 	results = []
 	for selector in selectors:
 		temp_results = view.find_by_selector(selector[1])
-		temp_results = [(view.substr(var)+'\tLESS '+selector[0], view.substr(var)) for var in temp_results]
+		temp_results = [(view.substr(var).strip()+'\tLESS '+selector[0], view.substr(var)) for var in temp_results]
 		results += list(set(temp_results))
 	cache_dict[file_name] = {"dependecies": file_imports, "completions": results}
 
@@ -69,9 +69,7 @@ class LessCompletions(sublime_plugin.EventListener):
 		if file_name and file_name in cache_dict:
 			results = []
 			file_list = get_dependency_files(file_name)
-			print(file_list)
 			for _file in file_list:
-				print(_file in cache_dict)
 				if _file in cache_dict:
 					results += cache_dict[_file].get('completions')
 			# results = [cache_dict[_file].get('completions') for _file in file_list if _file in cache_dict]
