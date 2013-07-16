@@ -36,7 +36,7 @@ def parse_view(file_name, view):
 	file_imports = parse_imports(file_name, view)
 	for _file in file_imports: parse_file(_file)
 	selectors = [
-		('var', 'variable.declaration.less'),
+		('var', 'support.constant.variable.css.less'),
 		# ('id', 'entity.other.attribute-name.id'),
 		# ('class', 'entity.other.attribute-name.class.css'),
 		('mixin', 'support.function.css.less')
