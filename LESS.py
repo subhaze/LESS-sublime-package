@@ -1,4 +1,4 @@
-import sublime, sublime_plugin, re, os, time
+import sublime, sublime_plugin, re, os
 
 cache_dict = {}
 
@@ -37,8 +37,8 @@ def parse_view(file_name, view):
 	for _file in file_imports: parse_file(_file)
 	selectors = [
 		('var', 'support.constant.variable.css.less'),
-		# ('id', 'entity.other.attribute-name.id'),
-		# ('class', 'entity.other.attribute-name.class.css'),
+		('id', 'entity.other.attribute-name.id'),
+		('class', 'entity.other.attribute-name.class.css'),
 		('mixin', 'support.function.css.less')
 	]
 	results = []
@@ -72,7 +72,7 @@ class LessCompletions(sublime_plugin.EventListener):
 			for _file in file_list:
 				if _file in cache_dict:
 					results += cache_dict[_file].get('completions')
-			# results = [cache_dict[_file].get('completions') for _file in file_list if _file in cache_dict]
+			results += cache_dict[file_name].get('completions', [])
 			results = list(set(results))
 			results.sort(key=lambda tup: tup[1])
 			return (results, 0)
@@ -81,3 +81,4 @@ class LessCompletions(sublime_plugin.EventListener):
 		file_name = view.file_name()
 		if file_name is None: return
 		parse_view(file_name, view)
+		# view.window().run_command('show_panel', {"panel": "output.LESS_output"})
